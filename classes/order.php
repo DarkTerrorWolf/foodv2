@@ -2,26 +2,27 @@
 
 class Order
 {
+    //Declare instance variables
     private $_food;
     private $_meal;
     private $_condiments;
 
-    function __construct() {
-        $this->_food = "";
-        $this->_meal = "";
-        $this->_condiments = array();
-    }
-
-    /**
-     * @return string
+    /** Default constructor
+     * @param $food the food
+     * @param $meal the meal
+     * @param $condiments the condiments
      */
-    public function getFood()
+    public function __construct($food = "scrambled eggs",
+                                $meal = "breakfast",
+                                $condiments = array("salt", "pepper"))
     {
-        return $this->_food;
+        $this->setFood($food);
+        $this->setMeal($meal);
+        $this->setCondiments($condiments);
     }
 
-    /**
-     * @param string $food
+    /** Set the food
+     * @param $food the food
      */
     public function setFood($food)
     {
@@ -29,7 +30,7 @@ class Order
     }
 
     /**
-     * @return string
+     * @return string the meal
      */
     public function getMeal()
     {
@@ -37,7 +38,7 @@ class Order
     }
 
     /**
-     * @param string $meal
+     * @param string the $meal
      */
     public function setMeal($meal)
     {
@@ -45,7 +46,7 @@ class Order
     }
 
     /**
-     * @return array
+     * @return array the condiments
      */
     public function getCondiments()
     {
@@ -53,12 +54,45 @@ class Order
     }
 
     /**
-     * @param array $condiments
+     * @param array the $condiments
      */
     public function setCondiments($condiments)
     {
         $this->_condiments = $condiments;
     }
 
+    /** Get the food
+     * @return the food
+     */
+    public function getFood()
+    {
+        return $this->_food;
+    }
 
+    /** toString() returns a String representation
+     *  of an order object
+     * @return string
+     */
+    public function toString()
+    {
+        $out = $this->_food . ", ";
+        $out .= $this->_meal . ", ";
+
+        if (!empty($this->_condiments)) {
+            $out .= implode(" & ", $this->_condiments);
+        }
+
+        return $out;
+    }
 }
+
+/* For testing purposes only */
+/*
+$order = new FoodOrder("pizza", "lunch", array("parmesan", "red pepper flakes"));
+echo $order->toString() . "<br>";
+$order2 = new FoodOrder();
+echo $order2->toString() . "<br>";
+$order3 = new FoodOrder("tacos", "dinner");
+$order3->setCondiments(array("taco sauce", "sour cream"));
+echo $order3->toString() . "<br>";
+*/
