@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <table>
+        <tr>
+        <th>order_id</th>
+        <th>food</th>
+        <th>meal</th>
+        <th>condiments</th>
+        <th>order time</th>
+        </tr>
+        <repeat group="{{@result}}" value="{{@row}}">
+        <tr>
+            <td>{{@row['order_id']}}</td>
+            <td>{{@row['food']}}</td>
+            <td>{{@row['meal']}}</td>
+            <td>{{@row['condiments']}}</td>
+            <td>{{@row[order_time]}}</td>
+
+        </tr>
+        </repeat>
+
+
+    </table>
+
+</body>
+</html>

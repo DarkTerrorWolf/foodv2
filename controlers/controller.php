@@ -9,7 +9,7 @@ class Controller
      * @param $f3
      * @param $validator
      */
-    public function __construct($f3,$validator)
+    public function __construct($f3, $validator)
     {
         $this->_f3 = $f3;
         $this->_validator = $validator;
@@ -18,7 +18,8 @@ class Controller
     /**
      *Display the default route
      */
-    public function home(){
+    public function home()
+    {
         //echo '<h1>Welcome to my Food Page</h1>';
 
         $view = new Template();
@@ -28,26 +29,27 @@ class Controller
     /**
      * Process the order route
      */
-    public function order(){
+    public function order()
+    {
 
         //If the form has been submitted
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             var_dump($_POST);
             //["food"]=>"tacos" ["meal"]=>"lunch"
 
             //Validate food
-            if (!$this->_validator ->validFood($_POST['food'])) {
+            if (!$this->_validator->validFood($_POST['food'])) {
 
                 //Set an error variable in the F3 hive
                 $this->_f3->set('errors["food"]', "Invalid food item");
             }
-            if (!$this->_validator ->validMeal($_POST['meal'])) {
+            if (!$this->_validator->validMeal($_POST['meal'])) {
 
                 //Set an error variable in the F3 hive
                 $this->_f3->set('errors["meal"]', "Invalid meal.");
             }
             //Data is valid
-            if (empty( $this->_f3->get('errors'))) {
+            if (empty($this->_f3->get('errors'))) {
                 //Create an order object
                 $order = new Order();
                 $order->setFood($_POST['food']);
@@ -77,7 +79,7 @@ class Controller
         $conds = getCondiments();
 
         //If the form has been submitted
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             //Add the data to the object in the session array
             $_SESSION['order']->setCondiments($_POST['conds']);
@@ -94,12 +96,28 @@ class Controller
     /**
      *
      */
-    public function summary(){
+    public function summary()
+    {
         //echo '<h1>Thank you for your order!</h1>';
+
+        //write order to database
+        $GLOBALS['db']->writeOrder($_SESSION['order']);
 
         $view = new Template();
         echo $view->render('views/summary.html');
 
         session_destroy();
+    }
+
+    public function display()
+    {
+        $result = $GLOBALS['db']->getOrders();
+        $this->_f3->set('result', $result);
+
+        $view = new Template();
+        echo $view->render('views/display.html');
+        //Create a new that display *all* of the results as a table
+        //id, food, meal, condiments, date
+
     }
 }
