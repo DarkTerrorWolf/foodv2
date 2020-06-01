@@ -2,16 +2,17 @@
 class Controller
 {
     private $_f3; // router
+    private $_validator; //validation object
 
     /**
      * Controller constructor.
      * @param $f3
-     * @param validator
+     * @param $validator
      */
-    public function __construct($f3)
+    public function __construct($f3,$validator)
     {
         $this->_f3 = $f3;
-
+        $this->_validator = $validator;
     }
 
     /**
@@ -35,19 +36,18 @@ class Controller
             //["food"]=>"tacos" ["meal"]=>"lunch"
 
             //Validate food
-            if (!$GLOBALS['validator'] ->validFood($_POST['food'])) {
+            if (!$this->_validator ->validFood($_POST['food'])) {
 
                 //Set an error variable in the F3 hive
                 $this->_f3->set('errors["food"]', "Invalid food item");
             }
-            if (!$GLOBALS['validator'] ->validMeal($_POST['meal'])) {
+            if (!$this->_validator ->validMeal($_POST['meal'])) {
 
                 //Set an error variable in the F3 hive
                 $this->_f3->set('errors["meal"]', "Invalid meal.");
             }
             //Data is valid
             if (empty( $this->_f3->get('errors'))) {
-                global $validator;
                 //Create an order object
                 $order = new Order();
                 $order->setFood($_POST['food']);
